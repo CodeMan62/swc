@@ -1,6 +1,6 @@
 {
     "name": "@swc/react-compiler",
-    "version": "1.11.26-nightly-20250512.1",
+    "version": "1.12.3",
     "description": "SWC support for React Compiler",
     "homepage": "https://swc.rs",
     "main": "./index.js",
@@ -43,7 +43,7 @@
     "types": "./index.d.ts",
     "scripts": {
         "artifacts": "napi artifacts --npm-dir scripts/npm",
-        "prepublishOnly": "tsc -d && napi prepublish -p scripts/npm --tagstyle npm",
+        "prepack": "tsc -d && napi prepublish -p scripts/npm --tag-style npm",
         "pack": "wasm-pack",
         "build:ts": "tsc -d",
         "build": "tsc -d && napi build --platform --js ./src/binding.js --dts ./src/binding.d.ts --manifest-path ../../bindings/Cargo.toml -p binding_react_compiler_node --output-dir . --release",

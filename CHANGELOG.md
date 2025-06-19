@@ -1,11 +1,52 @@
 # Changelog
-## [unreleased]
+## [1.12.3] - 2025-06-19
+
+### Bug Fixes
+
+
+
+- **(es/codgen)** Emit leading comments of JSXExprContainer ([#10627](https://github.com/swc-project/swc/issues/10627)) ([2d2162a](https://github.com/swc-project/swc/commit/2d2162a1e90b997db130ba8ab9b262cd145f998a))
+
+## [1.12.2] - 2025-06-19
+
+### Bug Fixes
+
+
+
+- **(ci)** Fix build of `@swc/minifier` ([0dc5244](https://github.com/swc-project/swc/commit/0dc52440ea8f2320614d0875fc421ba647f1a75c))
+
+
+- **(es/codegen)** Fix `.map` path when using `output_path` ([01e5bd1](https://github.com/swc-project/swc/commit/01e5bd1d6560d3b40e98122e09d0f7bd7c73b4c5))
+
+
+- **(es/parser)** Allow type ann in jsx expr child ([#10626](https://github.com/swc-project/swc/issues/10626)) ([48f576c](https://github.com/swc-project/swc/commit/48f576c64ac119af3bc990c78f06678dc0fdd800))
+
+
+- **(swc)** Fix wrong caching of resolvers regarding file exts ([#10615](https://github.com/swc-project/swc/issues/10615)) ([68aacd1](https://github.com/swc-project/swc/commit/68aacd1dfc2dd97feb5636f1833a6fa1e15407bd))
+
+
+- **(ts/isolated-dts)** Fix usage dependency ([#10621](https://github.com/swc-project/swc/issues/10621)) ([b3677d3](https://github.com/swc-project/swc/commit/b3677d36681820dd7c0f35ef97c44d5f7de69121))
+
+
+- **(ts/isolated-dts)** Emit properties in overloaded constructor params ([#10623](https://github.com/swc-project/swc/issues/10623)) ([6634ef1](https://github.com/swc-project/swc/commit/6634ef1d2fd7f298a4c5fbb5c23e28c2571177b8))
+
+### Features
+
+
+
+- **(swc_common)** Allow returning `None` in `try_lookup_source_file` ([#10625](https://github.com/swc-project/swc/issues/10625)) ([d8e2405](https://github.com/swc-project/swc/commit/d8e2405d7f67867699eeda36ca59ac11ca7baf71))
 
 ### Performance
 
 
 
+- **(atoms)** Improve `atom!` for inlinable strings ([#10612](https://github.com/swc-project/swc/issues/10612)) ([5113121](https://github.com/swc-project/swc/commit/51131212c3bd1992bdade5ab509572ad79d1aa53))
+
+
 - **(es/minifier)** Avoid calling some costly function when optimizing deep nested binary expr ([#10611](https://github.com/swc-project/swc/issues/10611)) ([1434571](https://github.com/swc-project/swc/commit/1434571477f5f8576a268a2bd32631eb9ce77229))
+
+
+- **(es/minifier)** Remove needless JSON conversion ([#10628](https://github.com/swc-project/swc/issues/10628)) ([4a58dca](https://github.com/swc-project/swc/commit/4a58dca92c71c2db871be3a09ea0aa6c9a6702fc))
 
 
 - **(es/parser)** Reduce cmp in jsx spread child ([#10606](https://github.com/swc-project/swc/issues/10606)) ([fb33c13](https://github.com/swc-project/swc/commit/fb33c135444edc4de4531cac7d5ae27feabfff76))
@@ -15,6 +56,9 @@
 
 
 - **(es/parser)** Cleanup - deduplicate some code ([#10608](https://github.com/swc-project/swc/issues/10608)) ([5f9af96](https://github.com/swc-project/swc/commit/5f9af969d7a123b6cbc82c7a76489acf244a1cf3))
+
+
+- **(es/parser)** Remove token contexts ([#10547](https://github.com/swc-project/swc/issues/10547)) ([7ffe9d2](https://github.com/swc-project/swc/commit/7ffe9d23ca55c61acef69782e88d2e0e0e7ea47a))
 
 ## [1.12.1] - 2025-06-12
 
@@ -2045,76 +2089,5 @@
 
 
 - **(deps)** Update dependency magic-string to v0.30.12 ([#9634](https://github.com/swc-project/swc/issues/9634)) ([085bc19](https://github.com/swc-project/swc/commit/085bc191e46d4d46efc3d4a7cd5fc1240c8474dd))
-
-## [1.7.35] - 2024-10-10
-
-### Bug Fixes
-
-
-
-- **(ci)** Fix target triples ([#9622](https://github.com/swc-project/swc/issues/9622)) ([f625035](https://github.com/swc-project/swc/commit/f625035f8a21eb6d2bc487669a534257f3ef7c7c))
-
-
-- **(es/codegen)** Fix source map so it works with Sentry ([#9627](https://github.com/swc-project/swc/issues/9627)) ([9c90a73](https://github.com/swc-project/swc/commit/9c90a733691e9a15bc1c4182edabcefa8054e9d3))
-
-
-- **(es/minifier)** Compress consecutive return statements properly ([#9620](https://github.com/swc-project/swc/issues/9620)) ([8263da1](https://github.com/swc-project/swc/commit/8263da17664cc7cb5d49e1a8e9fbca8037fe991f))
-
-
-- **(es/module)** Allow TypeScript nodes for `Rewriter` ([#9606](https://github.com/swc-project/swc/issues/9606)) ([4ee45ac](https://github.com/swc-project/swc/commit/4ee45ac1fd10da1ea982a152a458deb9f5359998))
-
-
-- **(es/testing)** Revert #9264 ([#9621](https://github.com/swc-project/swc/issues/9621)) ([85f5e5b](https://github.com/swc-project/swc/commit/85f5e5b955f65ad6b21b9f4aee5b8dacd8a71e93))
-
-
-- **(html/minifier)** Fix HTML minifier TS types ([#9615](https://github.com/swc-project/swc/issues/9615)) ([7b98bb5](https://github.com/swc-project/swc/commit/7b98bb5e93b132fa14af27b1eadbcf38f0bbcb62))
-
-### Features
-
-
-
-- **(bindings/html)** Accept `Buffer|string` instead of `Buffer` ([#9625](https://github.com/swc-project/swc/issues/9625)) ([62edb36](https://github.com/swc-project/swc/commit/62edb3628b26036cdc767b31d59e109c3970497c))
-
-
-- **(es/preset-env)** Update preset-env data ([#9573](https://github.com/swc-project/swc/issues/9573)) ([9a11d34](https://github.com/swc-project/swc/commit/9a11d34ee569f64e8db02fc90beacbba0f2de0cf))
-
-
-- **(es/testing)** Parse test code as a `Program` instead of a `Module` ([#9264](https://github.com/swc-project/swc/issues/9264)) ([166b858](https://github.com/swc-project/swc/commit/166b8581c226b127f5d503cd21c22c0a3a8c675c))
-
-
-- **(es/testing)** Parse test code as a `Program` instead of a `Module` ([#9623](https://github.com/swc-project/swc/issues/9623)) ([bfea322](https://github.com/swc-project/swc/commit/bfea3223515e378c3ebe669f4a9012919f4f9547))
-
-### Miscellaneous Tasks
-
-
-
-- **(atoms)** Update `hstr` ([#9612](https://github.com/swc-project/swc/issues/9612)) ([e2e9a9c](https://github.com/swc-project/swc/commit/e2e9a9ccfce75e69546c54fc88a708b4e1dda13b))
-
-### Performance
-
-
-
-- **(es)** Avoid needless string comparisons ([#9613](https://github.com/swc-project/swc/issues/9613)) ([ec0a62c](https://github.com/swc-project/swc/commit/ec0a62cbc5c9a20f02d1c558ff2708e7367922a9))
-
-
-- **(es/codegen)** Reduce usage of `tracing::instrument` ([#9604](https://github.com/swc-project/swc/issues/9604)) ([2f06fc5](https://github.com/swc-project/swc/commit/2f06fc559c8e200ea89133b8b30045f970ffc20b))
-
-
-- **(es/transforms)** Copy benchmarks from `oxc` ([#9602](https://github.com/swc-project/swc/issues/9602)) ([24c3a0c](https://github.com/swc-project/swc/commit/24c3a0ce138bacbf12b4660862ccfe9e3d19bdd9))
-
-
-- **(es/typescript)** Reduce unnecessary visits ([#9605](https://github.com/swc-project/swc/issues/9605)) ([866af6c](https://github.com/swc-project/swc/commit/866af6c9478b92cd6be780c515ddd51d2db90ac3))
-
-### Refactor
-
-
-
-- **(es/typescript)** Simplifying enum and namespace transforms ([#9558](https://github.com/swc-project/swc/issues/9558)) ([2480bb0](https://github.com/swc-project/swc/commit/2480bb00fc71d588af506eb18f33afa56622361f))
-
-### Build
-
-
-
-- Update `rustc` to `nightly-2024-10-07` ([#9624](https://github.com/swc-project/swc/issues/9624)) ([6a3b0fc](https://github.com/swc-project/swc/commit/6a3b0fc1660cba4310880881f21e3bf81aceac0d))
 
 <!-- generated by git-cliff -->

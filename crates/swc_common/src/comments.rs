@@ -33,7 +33,7 @@ pub trait Comments {
     fn add_leading_comments(&self, pos: BytePos, comments: Vec<Comment>);
     fn has_leading(&self, pos: BytePos) -> bool;
     fn move_leading(&self, from: BytePos, to: BytePos);
-    fn take_leading(&self, pos: BytePos) -> Option<Vec<Comment>>;
+    fn take_leading(&self, pos: BytePos) -> Vec<Comment>;
     fn get_leading(&self, pos: BytePos) -> Option<Vec<Comment>>;
 
     fn add_trailing(&self, pos: BytePos, cmt: Comment);
@@ -52,15 +52,9 @@ pub trait Comments {
     {
         let cmts = self.take_leading(pos);
 
-        let ret = if let Some(cmts) = &cmts {
-            f(cmts)
-        } else {
-            f(&[])
-        };
+        let ret = f(&cmts);
 
-        if let Some(cmts) = cmts {
-            self.add_leading_comments(pos, cmts);
-        }
+        self.add_leading_comments(pos, cmts);
 
         ret
     }
@@ -92,36 +86,30 @@ pub trait Comments {
     fn has_flag(&self, lo: BytePos, flag: &str) -> bool {
         let cmts = self.take_leading(lo);
 
-        let ret = if let Some(comments) = &cmts {
-            (|| {
-                for c in comments {
-                    if c.kind == CommentKind::Block {
-                        for line in c.text.lines() {
-                            // jsdoc
-                            let line = line.trim_start_matches(['*', ' ']);
-                            let line = line.trim();
+        let ret = (|| {
+            for c in &cmts {
+                if c.kind == CommentKind::Block {
+                    for line in c.text.lines() {
+                        // jsdoc
+                        let line = line.trim_start_matches(['*', ' ']);
+                        let line = line.trim();
 
-                            //
-                            if line.len() == (flag.len() + 5)
-                                && (line.starts_with("#__") || line.starts_with("@__"))
-                                && line.ends_with("__")
-                                && flag == &line[3..line.len() - 2]
-                            {
-                                return true;
-                            }
+                        //
+                        if line.len() == (flag.len() + 5)
+                            && (line.starts_with("#__") || line.starts_with("@__"))
+                            && line.ends_with("__")
+                            && flag == &line[3..line.len() - 2]
+                        {
+                            return true;
                         }
                     }
                 }
+            }
 
-                false
-            })()
-        } else {
             false
-        };
+        })();
 
-        if let Some(cmts) = cmts {
-            self.add_trailing_comments(lo, cmts);
-        }
+        self.add_leading_comments(lo, cmts);
 
         ret
     }
@@ -145,7 +133,7 @@ macro_rules! delegate {
             (**self).move_leading(from, to)
         }
 
-        fn take_leading(&self, pos: BytePos) -> Option<Vec<Comment>> {
+        fn take_leading(&self, pos: BytePos) -> Vec<Comment> {
             (**self).take_leading(pos)
         }
 
@@ -235,8 +223,8 @@ impl Comments for NoopComments {
     fn move_leading(&self, _: BytePos, _: BytePos) {}
 
     #[cfg_attr(not(debug_assertions), inline(always))]
-    fn take_leading(&self, _: BytePos) -> Option<Vec<Comment>> {
-        None
+    fn take_leading(&self, _: BytePos) -> Vec<Comment> {
+        Vec::new()
     }
 
     #[cfg_attr(not(debug_assertions), inline(always))]
@@ -308,12 +296,8 @@ where
         }
     }
 
-    fn take_leading(&self, pos: BytePos) -> Option<Vec<Comment>> {
-        if let Some(c) = self {
-            c.take_leading(pos)
-        } else {
-            None
-        }
+    fn take_leading(&self, pos: BytePos) -> Vec<Comment> {
+        self.as_ref().expect("Comments missing").take_leading(pos)
     }
 
     fn get_leading(&self, pos: BytePos) -> Option<Vec<Comment>> {
@@ -440,19 +424,17 @@ impl Comments for SingleThreadedComments {
     }
 
     fn move_leading(&self, from: BytePos, to: BytePos) {
-        let cmt = self.take_leading(from);
+        let mut cmt = self.take_leading(from);
 
-        if let Some(mut cmt) = cmt {
             if from < to && self.has_leading(to) {
-                cmt.extend(self.take_leading(to).unwrap());
+                cmt.extend(self.take_leading(to));
             }
 
             self.add_leading_comments(to, cmt);
-        }
     }
 
-    fn take_leading(&self, pos: BytePos) -> Option<Vec<Comment>> {
-        self.leading.borrow_mut().remove(&pos)
+    fn take_leading(&self, pos: BytePos) -> Vec<Comment> {
+        self.leading.borrow_mut().remove(&pos).expect("No comments at this position")
     }
 
     fn get_leading(&self, pos: BytePos) -> Option<Vec<Comment>> {
